@@ -12,7 +12,7 @@ import java.util.List;
 public class Member {
 
     private String id;
-    private Long cpf;
+    private Cpf cpf;
     private Vote vote;
     private List<Session> session;
     private Boolean isVoted;
