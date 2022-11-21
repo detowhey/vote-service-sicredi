@@ -7,6 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Cpf {
 
-    private Long number;
+    private String cpfNumber;
     private Boolean ableVote;
+    private String status;
 }

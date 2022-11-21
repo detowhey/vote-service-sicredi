@@ -15,8 +15,8 @@ public class CpfService {
 
     public Cpf getCpfIsValid(String cpf) {
         CpfInformationClientDTO info = cpfVoteClient.getCpfEnaleToVote(cpf);
-        long cpfNUmber = Long.parseLong(cpf);
-        boolean isAble = info.getStatus().equals(EligibleToVote.ABLE_TO_VOTE);
-        return new Cpf(cpfNUmber, isAble);
+        String status = info.getStatus();
+        boolean isAble = status.equals(EligibleToVote.ABLE_TO_VOTE.name());
+        return new Cpf(cpf, isAble, status);
     }
 }

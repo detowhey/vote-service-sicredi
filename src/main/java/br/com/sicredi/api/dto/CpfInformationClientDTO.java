@@ -8,8 +8,14 @@ import lombok.NoArgsConstructor;
 public class CpfInformationClientDTO {
     @Getter
     private String status;
+    @Getter
+    private Boolean isValidToVote;
+    @Getter
+    private String cpfNumber;
 
-    public CpfInformationClientDTO(Cpf cpf) {
-        this.status = cpf.getNumber().toString();
-    }
+        public CpfInformationClientDTO(Cpf cpf) {
+            this.status = cpf.getStatus();
+            this.isValidToVote = cpf.getAbleVote();
+            this.cpfNumber = cpf.getCpfNumber();
+        }
 }
