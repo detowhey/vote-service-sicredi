@@ -8,9 +8,9 @@ import java.time.Instant;
 
 @Data
 @AllArgsConstructor
-public class StandbardError {
+public class StandbardErrorResponse {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-/MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss", timezone = "UTC")
     private Instant timestamp;
     private Integer statusCode;
     private String error;

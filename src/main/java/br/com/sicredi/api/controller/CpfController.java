@@ -9,16 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("v1/api")
+@RequestMapping(value = "v1/api/cpf", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CpfController {
 
     @Autowired
     private CpfService cpfService;
 
-    @GetMapping(value = "/cpf/{cpf}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{cpf}")
     public ResponseEntity<CpfInformationDTO> getIsEnableCpf(@PathVariable String cpf) {
         return ResponseEntity.ok().body(new CpfInformationDTO
                 (new CpfInformationClientDTO(cpfService.getCpfIsValid(cpf))));
     }
-
 }

@@ -1,15 +1,13 @@
 package br.com.sicredi.api.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Data
 @NoArgsConstructor
 public class CpfInformationDTO {
 
-    @Getter
     private String cpfNumber;
 
-    @Getter
     private Boolean isValidToVote;
 
     public CpfInformationDTO(CpfInformationClientDTO informationClientDTO) {
