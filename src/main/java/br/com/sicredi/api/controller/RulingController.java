@@ -24,13 +24,13 @@ public class RulingController {
     private RulingService rulingService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<RulingIdDTO> getRulingById(@PathVariable String id) {
+    public ResponseEntity<RulingDTO> getRulingById(@PathVariable String id) {
         return ResponseEntity.ok().body(new RulingIdDTO(rulingService.findById(id)));
     }
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<RulingIdDTO>> getAllRulings() {
-        return ResponseEntity.ok().body(rulingService.returnAllRulings().stream().map(RulingIdDTO::new).collect(Collectors.toList()));
+    public ResponseEntity<List<RulingDTO>> getAllRulings() {
+        return ResponseEntity.ok().body(transformToDTO(rulingService.returnAllRulings()));
     }
 
     @GetMapping
@@ -42,12 +42,13 @@ public class RulingController {
     public ResponseEntity<RulingDTO> insertRuling(@Valid @RequestBody RulingDTO rulingDTO) {
         var ruling = rulingService.fromDTO(rulingDTO);
         ruling.setId(ObjectId.get().toString());
-        ruling = rulingService.save(ruling);
-        var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(ruling.getId()).toUri();
-        return ResponseEntity.created(uri).body(rulingDTO);
+
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(ruling.getId())
+                .toUri()).body(new RulingIdDTO(rulingService.save(ruling)));
     }
 
     private List<RulingDTO> transformToDTO(List<Ruling> rulingList) {
-        return rulingList.stream().map(RulingDTO::new).collect(Collectors.toList());
+        return rulingList.stream().map(RulingIdDTO::new).collect(Collectors.toList());
     }
 }
