@@ -33,7 +33,7 @@ public class ResourceExceptionHandler {
         String cpf = request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE).toString().replaceAll("[^0-9]+", "");
         return responseErrorEntity(
                 HttpStatus.NOT_FOUND,
-                "This CPF number " + cpf + "isn't valid",
+                "This CPF number " + cpf + " isn't valid",
                 request,
                 "CPF isn't valid"
         );

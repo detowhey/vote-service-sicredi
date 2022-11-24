@@ -24,4 +24,9 @@ public class Ruling {
     @NotBlank
     @Size(min = 3, message = "{validation.name.size.too_short}")
     private String name;
+
+    public Ruling(Session session, String name) {
+        this.session = session;
+        this.name = name;
+    }
 }

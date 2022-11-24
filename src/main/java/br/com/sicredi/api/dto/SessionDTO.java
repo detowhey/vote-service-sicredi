@@ -2,6 +2,7 @@ package br.com.sicredi.api.dto;
 
 import br.com.sicredi.api.domain.Member;
 import br.com.sicredi.api.domain.Session;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,21 +13,9 @@ import java.util.Timer;
 @NoArgsConstructor
 public class SessionDTO {
 
-    private String id;
-    private Long totalVotes;
-    private Boolean isOpen;
-    private Long yesVotes;
-    private Long noVotes;
-    private List<Member> members;
-    private Timer timer;
+    private Long numberVanancies;
 
     public SessionDTO(Session session) {
-        this.id = session.getId();
-        this.totalVotes = session.getTotalVotes();
-        this.isOpen = session.getIsOpen();
-        this.yesVotes = session.getYesVotes();
-        this.noVotes = session.getNoVotes();
-        this.members = session.getMembers();
-        this.timer = session.getTimer();
+        this.numberVanancies = session.getNumberVacancies();
     }
 }

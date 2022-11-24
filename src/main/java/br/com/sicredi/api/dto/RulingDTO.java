@@ -1,21 +1,20 @@
 package br.com.sicredi.api.dto;
 
 import br.com.sicredi.api.domain.Ruling;
-import br.com.sicredi.api.domain.Session;
+import com.mongodb.lang.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Unwrapped;
 
 @Data
 @NoArgsConstructor
 public class RulingDTO {
 
-    private String id;
-    private Session session;
     private String name;
+    private Long numberVanancies;
 
     public RulingDTO(Ruling ruling) {
-        this.id = ruling.getId();
-        this.session = ruling.getSession();
+        this.numberVanancies = ruling.getSession().getNumberVacancies();
         this.name = ruling.getName();
     }
 }
