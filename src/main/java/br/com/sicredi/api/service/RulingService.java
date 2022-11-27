@@ -26,6 +26,12 @@ public class RulingService {
         }
     }
 
+    public Ruling update(Ruling ruling) {
+        var data = this.findById(ruling.getId());
+        this.updateData(data, ruling);
+        return rulingRepository.save(data);
+    }
+
     public List<Ruling> returnAllRulings() {
         return rulingRepository.findAll();
     }
@@ -47,5 +53,10 @@ public class RulingService {
 
     public Ruling fromDTO(RulingDTO rulingDTO) {
         return new Ruling(new Session(rulingDTO.getNumberVanancies()), rulingDTO.getName());
+    }
+
+    private void updateData(Ruling newRuling, Ruling oldRuling) {
+        newRuling.setName(oldRuling.getName());
+        newRuling.setSession(oldRuling.getSession());
     }
 }

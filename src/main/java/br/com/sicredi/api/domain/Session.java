@@ -1,9 +1,9 @@
 package br.com.sicredi.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,10 +14,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document
 public class Session {
 
-    @NotNull
     private Boolean isOpen;
+    private Boolean alreadyVoted;
     @NotNull
     @Min(value = 1)
     private Long numberVacancies;
@@ -28,6 +29,7 @@ public class Session {
 
     public Session(Long numberVacancies) {
         this.isOpen = false;
+        this.alreadyVoted = true;
         this.numberVacancies = numberVacancies;
         this.yesVotes = 0L;
         this.noVotes = 0L;

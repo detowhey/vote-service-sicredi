@@ -48,6 +48,17 @@ public class RulingController {
                 .toUri()).body(new RulingIdDTO(rulingService.save(ruling)));
     }
 
+    @PutMapping("open/{id}")
+    public ResponseEntity<String> openSession(@PathVariable String id) {
+        var ruling = rulingService.findById(id);
+        ruling.setId(id);
+        ruling.getSession().setIsOpen(true);
+        rulingService.update(ruling);
+        return ResponseEntity.ok().body("Ruling with id " + id + " is open");
+    }
+
+    @PutMapping
+
     private List<RulingDTO> transformToDTO(List<Ruling> rulingList) {
         return rulingList.stream().map(RulingIdDTO::new).collect(Collectors.toList());
     }
