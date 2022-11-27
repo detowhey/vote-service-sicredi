@@ -22,7 +22,7 @@ public class Ruling {
     private String id;
     private Session session;
     @NotBlank
-    @Size(min = 3, message = "{validation.name.size.too_short}")
+    @Size(min = 3, message = "Name is more then 3 chars")
     private String name;
 
     public Ruling(Session session, String name) {

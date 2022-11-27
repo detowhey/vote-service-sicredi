@@ -25,7 +25,7 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<StandbardErrorResponse> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
-        return responseErrorEntity(HttpStatus.BAD_REQUEST, e.getMessage(), request, "Member already registered with this CPF");
+        return responseErrorEntity(HttpStatus.BAD_REQUEST, e.getMessage(), request, "Object not found");
     }
 
     @ExceptionHandler(FeignException.NotFound.class)
@@ -43,7 +43,7 @@ public class ResourceExceptionHandler {
             HttpStatus httpStatus, String exceptionMessage,
             HttpServletRequest request, String messageError) {
 
-        StandbardErrorResponse error = new StandbardErrorResponse(Instant.now(), httpStatus.value(), messageError, exceptionMessage, request.getRequestURI());
+        var error = new StandbardErrorResponse(Instant.now(), httpStatus.value(), messageError, exceptionMessage, request.getRequestURI());
         return ResponseEntity.status(httpStatus).body(error);
     }
 }

@@ -10,7 +10,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class StandbardErrorResponse {
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss", timezone = "UTC")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", timezone = "UTC")
     private Instant timestamp;
     private Integer statusCode;
     private String error;
