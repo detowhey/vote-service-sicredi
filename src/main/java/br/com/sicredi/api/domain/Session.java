@@ -29,7 +29,7 @@ public class Session {
 
     public Session(Long numberVacancies) {
         this.isOpen = false;
-        this.alreadyVoted = true;
+        this.alreadyVoted = false;
         this.numberVacancies = numberVacancies;
         this.yesVotes = 0L;
         this.noVotes = 0L;

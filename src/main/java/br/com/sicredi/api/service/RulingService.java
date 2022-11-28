@@ -37,12 +37,7 @@ public class RulingService {
     }
 
     public List<Ruling> findByNameRegex(String name) {
-        List<Ruling> rulingList = rulingRepository.findByName(name);
-
-        if (rulingList.isEmpty())
-            throw new ObjectNotFoundException("There isn't Ruling with this name " + name);
-
-        return rulingList;
+        return rulingRepository.findByName(name);
     }
 
     public Ruling findById(String id) {

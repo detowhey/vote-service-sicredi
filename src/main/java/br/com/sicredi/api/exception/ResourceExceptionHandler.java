@@ -38,6 +38,16 @@ public class ResourceExceptionHandler {
         return responseErrorEntity(HttpStatus.INTERNAL_SERVER_ERROR, e, request, "Some attribute is invalid");
     }
 
+    @ExceptionHandler(CpfMemberRegistredException.class)
+    public ResponseEntity<StandbardErrorResponse> memberIsRegistred(HttpServletRequest request,CpfMemberRegistredException e){
+        return responseErrorEntity(HttpStatus.CONFLICT, e, request, "CPF already is registered, use other value");
+    }
+
+    @ExceptionHandler(OpenSessionException.class)
+    public ResponseEntity<StandbardErrorResponse> notPossibleOpenVotation(HttpServletRequest request, OpenSessionException e){
+        return responseErrorEntity(HttpStatus.BAD_REQUEST, e, request, "Cannot open poll without members");
+    }
+
     private ResponseEntity<StandbardErrorResponse> responseErrorEntity(
             HttpStatus httpStatus, Exception exception,
             HttpServletRequest request, String messageError) {
