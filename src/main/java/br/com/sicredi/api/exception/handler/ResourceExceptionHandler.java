@@ -1,5 +1,7 @@
-package br.com.sicredi.api.exception;
+package br.com.sicredi.api.exception.handler;
 
+import br.com.sicredi.api.exception.*;
+import br.com.sicredi.api.exception.error.StandbardErrorResponse;
 import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

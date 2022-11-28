@@ -1,4 +1,4 @@
-package br.com.sicredi.api.exception;
+package br.com.sicredi.api.exception.error;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
