@@ -29,7 +29,7 @@ public class ScheduleConfig {
 
     @Scheduled(fixedDelay = 1000)
     public void closesRecentlyCompletedSessions() {
-        List<Ruling> openRulings = rulingService.getRulingByStatus(RulingStatus.OPEN.name());
+        List<Ruling> openRulings = rulingService.findByRulingByStatus(RulingStatus.OPEN.name());
 
         logger.info("{} found open rulings", openRulings.size());
         openRulings.stream()
@@ -40,7 +40,7 @@ public class ScheduleConfig {
                 }).forEach(
                         rulingClosed -> {
                             logger.info("Generating voting results for the ruling {}", rulingClosed);
-                            ResultRulingResponse result = rulingService.getPollResult(rulingClosed.getId());
+                            ResultRulingResponse result = rulingService.findByRulingPollResult(rulingClosed.getId());
 
                             logger.info("Publishing result {} to queue {}", result, RabbitMqConfig.RULING_QUEUE);
                             rabbitMqService.sendMessage(RabbitMqConfig.RULING_QUEUE, result);

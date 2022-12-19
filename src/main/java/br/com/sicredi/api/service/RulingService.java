@@ -14,9 +14,8 @@ import br.com.sicredi.api.repository.RulingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RulingService {
@@ -89,11 +88,11 @@ public class RulingService {
                 .map(rulingRepository::save).get();
     }
 
-    public List<Ruling> getRulingByStatus(String rulingStatus) {
+    public List<Ruling> findByRulingByStatus(String rulingStatus) {
         return rulingRepository.findAllByStatus(rulingStatus);
     }
 
-    public ResultRulingResponse getPollResult(String rulingId) {
+    public ResultRulingResponse findByRulingPollResult(String rulingId) {
         Ruling ruling = this.findById(rulingId);
         Map<VoteOption, Long> pollResult = this.getPollResult(ruling);
         long yesVotes = Optional.ofNullable(pollResult.get(VoteOption.YES)).orElse(0L);
@@ -106,6 +105,14 @@ public class RulingService {
                 .numberNoVotes(noVotes)
                 .result(this.calculatePollResult(yesVotes, noVotes))
                 .build();
+    }
+
+    public List<ResultRulingResponse> findByListRulingsPollResult(String pollResult) {
+        List<Ruling> rulingList = this.returnAllRulings();
+        List<ResultRulingResponse> results = new ArrayList<>();
+
+        rulingList.forEach(ruling -> results.add(this.findByRulingPollResult(ruling.getId())));
+        return results.stream().filter(result -> result.getResult().name().equals(pollResult)).collect(Collectors.toList());
     }
 
     private PollResult calculatePollResult(long yesVotes, long noVotes) {

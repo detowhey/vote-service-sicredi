@@ -15,6 +15,6 @@ public class RulingRequest {
 
     @Schema(description = "Ruling's name", requiredMode = Schema.RequiredMode.REQUIRED, example = "Ruling name")
     @Size(min = 5, message = "Name is more then 5 chars")
-    @NotBlank
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 }

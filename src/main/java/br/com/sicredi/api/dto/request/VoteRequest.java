@@ -22,6 +22,6 @@ public class VoteRequest {
     @NotBlank(message = "CPF is required")
     private String memberCpf;
     @Schema(description = "Votes member", requiredMode = Schema.RequiredMode.REQUIRED, example = "YES")
-    @NotNull
+    @NotNull(message = "Vote option cannot be null")
     private VoteOption vote;
 }
