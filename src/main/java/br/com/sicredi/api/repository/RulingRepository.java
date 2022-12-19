@@ -11,11 +11,9 @@ import java.util.List;
 @Repository
 public interface RulingRepository extends MongoRepository<Ruling, String> {
 
-    @Query("{'name': {$regex: ?0, $options: 'i'}}")
+    @Query("{ 'name': {$regex: ?0, $options: 'i'}}")
     List<Ruling> findByName(@Param("name") String name);
 
     @Query("{ 'status': ?0}")
     List<Ruling> findAllByStatus(String status);
-
-//    @Query("{ 'session.'}")
 }

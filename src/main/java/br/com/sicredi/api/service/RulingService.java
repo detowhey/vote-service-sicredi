@@ -89,8 +89,8 @@ public class RulingService {
                 .map(rulingRepository::save).get();
     }
 
-    public List<Ruling> getRulingByStatus(RulingStatus rulingStatus) {
-        return rulingRepository.findAllByStatus(rulingStatus.name());
+    public List<Ruling> getRulingByStatus(String rulingStatus) {
+        return rulingRepository.findAllByStatus(rulingStatus);
     }
 
     public ResultRulingResponse getPollResult(String rulingId) {

@@ -29,7 +29,7 @@ public class ScheduleConfig {
 
     @Scheduled(fixedDelay = 1000)
     public void closesRecentlyCompletedSessions() {
-        List<Ruling> openRulings = rulingService.getRulingByStatus(RulingStatus.OPEN);
+        List<Ruling> openRulings = rulingService.getRulingByStatus(RulingStatus.OPEN.name());
 
         logger.info("{} found open rulings", openRulings.size());
         openRulings.stream()
