@@ -25,9 +25,19 @@ public class ResourceExceptionHandler {
         return responseErrorEntity(HttpStatus.INTERNAL_SERVER_ERROR, e, request, "Database error");
     }
 
-    @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<StandbardErrorResponse> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
-        return responseErrorEntity(HttpStatus.BAD_REQUEST, e, request, "Object not found");
+    @ExceptionHandler(RulingNotFoundException.class)
+    public ResponseEntity<StandbardErrorResponse> rulingNotFound(RulingNotFoundException e, HttpServletRequest request) {
+        return responseErrorEntity(HttpStatus.BAD_REQUEST, e, request, "Ruling not found");
+    }
+
+    @ExceptionHandler(SessionAlreadyStartedException.class)
+    public ResponseEntity<StandbardErrorResponse> sessionIsStarted(SessionAlreadyStartedException e, HttpServletRequest request) {
+        return responseErrorEntity(HttpStatus.CONFLICT, e, request, "Session has already started");
+    }
+
+    @ExceptionHandler(SessionClosedException.class)
+    public ResponseEntity<StandbardErrorResponse> sessionClosed(SessionClosedException e, HttpServletRequest request) {
+        return responseErrorEntity(HttpStatus.CONFLICT, e, request, "Session is closed");
     }
 
     @ExceptionHandler(FeignException.NotFound.class)
@@ -40,14 +50,14 @@ public class ResourceExceptionHandler {
         return responseErrorEntity(HttpStatus.INTERNAL_SERVER_ERROR, e, request, "Some attribute is invalid");
     }
 
-    @ExceptionHandler(CpfMemberRegistredException.class)
-    public ResponseEntity<StandbardErrorResponse> memberIsRegistred(HttpServletRequest request,CpfMemberRegistredException e){
-        return responseErrorEntity(HttpStatus.CONFLICT, e, request, "CPF already is registered, use other value");
+    @ExceptionHandler(InvalidCpfException.class)
+    public ResponseEntity<StandbardErrorResponse> memberIsRegistred(HttpServletRequest request, InvalidCpfException e) {
+        return responseErrorEntity(HttpStatus.BAD_REQUEST, e, request, "Invalid CPF");
     }
 
-    @ExceptionHandler(OpenSessionException.class)
-    public ResponseEntity<StandbardErrorResponse> notPossibleOpenVotation(HttpServletRequest request, OpenSessionException e){
-        return responseErrorEntity(HttpStatus.BAD_REQUEST, e, request, "Cannot open poll without members");
+    @ExceptionHandler(DuplicateVoteException.class)
+    public ResponseEntity<StandbardErrorResponse> duplicatedVote(HttpServletRequest request, DuplicateVoteException e) {
+        return responseErrorEntity(HttpStatus.CONFLICT, e, request, "The vote is duplicated");
     }
 
     private ResponseEntity<StandbardErrorResponse> responseErrorEntity(

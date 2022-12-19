@@ -1,6 +1,8 @@
 package br.com.sicredi.api.domain;
 
+import br.com.sicredi.api.domain.enu.RulingStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -22,11 +24,8 @@ public class Ruling {
     private String id;
     private Session session;
     @NotBlank
-    @Size(min = 3, message = "Name is more then 3 chars")
+    @Size(min = 5, message = "Name is more then 5 chars")
     private String name;
-
-    public Ruling(Session session, String name) {
-        this.session = session;
-        this.name = name;
-    }
+    @Builder.Default
+    private RulingStatus status = RulingStatus.NOT_STARTED;
 }

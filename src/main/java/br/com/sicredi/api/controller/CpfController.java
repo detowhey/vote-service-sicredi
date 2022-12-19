@@ -1,7 +1,7 @@
 package br.com.sicredi.api.controller;
 
-import br.com.sicredi.api.dto.CpfInformationClientDTO;
-import br.com.sicredi.api.dto.CpfInformationDTO;
+import br.com.sicredi.api.dto.response.CpfExternalResponse;
+import br.com.sicredi.api.dto.response.CpfResponse;
 import br.com.sicredi.api.service.CpfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,8 +19,8 @@ public class CpfController {
     private CpfService cpfService;
 
     @GetMapping(value = "/{cpf}")
-    public ResponseEntity<CpfInformationDTO> getIsEnableCpf(@PathVariable String cpf) {
-        return ResponseEntity.ok().body(new CpfInformationDTO
-                (new CpfInformationClientDTO(cpfService.getCpfIsValid(cpf))));
+    public ResponseEntity<CpfResponse> getIsEnableCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok().body(new CpfResponse
+                (new CpfExternalResponse(cpfService.getCpfIsValid(cpf))));
     }
 }
