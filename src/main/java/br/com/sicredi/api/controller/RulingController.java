@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Tag(name = "Ruling", description = "Ruling endpoint operations")
 @RestController
-@RequestMapping(value = "/api/v1/ruling", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/${api.version}/ruling", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RulingController {
 
     private final Logger logger = LoggerFactory.getLogger(RulingController.class);

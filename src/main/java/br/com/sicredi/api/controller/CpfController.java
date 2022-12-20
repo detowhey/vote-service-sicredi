@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "api/v1/cpf", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/${api.version}/cpf", produces = MediaType.APPLICATION_JSON_VALUE)
 @Hidden
 public class CpfController {
 

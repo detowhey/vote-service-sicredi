@@ -16,12 +16,12 @@ import java.util.List;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI customOpenAPI(@Value("${springdoc.version}") String appVersion) {
+    public OpenAPI customOpenAPI(@Value("${api.version}") String appVersion) {
         return new OpenAPI()
                 .info(new Info().title("Sicredi voting API")
                         .description("Application to count the votes of the rulings")
                         .version(appVersion))
-                .servers(List.of(new Server().url("http://localhost:8082").description("URL service")));
+                .servers(List.of(new Server().url("http://localhost:8080").description("URL service")));
 
     }
     @Bean
