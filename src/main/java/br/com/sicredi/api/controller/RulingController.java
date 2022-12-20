@@ -8,7 +8,6 @@ import br.com.sicredi.api.dto.request.SessionRequest;
 import br.com.sicredi.api.dto.request.VoteRequest;
 import br.com.sicredi.api.dto.response.ResultRulingResponse;
 import br.com.sicredi.api.dto.response.RulingResponse;
-import br.com.sicredi.api.exception.error.StandbardErrorResponse;
 import br.com.sicredi.api.service.RulingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -58,11 +57,9 @@ public class RulingController {
     }
 
     @Operation(summary = "Open the ruling session", responses = {
-            @ApiResponse(responseCode = "200", description = "Voting session opened successfully", content = {
-                    @Content(schema = @Schema(implementation = RulingResponse.class))
-            }),
+            @ApiResponse(responseCode = "200", description = "Voting session opened successfully"),
             @ApiResponse(responseCode = "409", description = "The voting session for the requested agenda has already been opened previously", content = {
-                    @Content(schema = @Schema(implementation = StandbardErrorResponse.class))
+                    @Content(schema = @Schema(hidden = true))
             })
     })
     @PostMapping("/open/{rulingId}")
@@ -73,11 +70,9 @@ public class RulingController {
 
 
     @Operation(summary = "Add a new vote", responses = {
-            @ApiResponse(responseCode = "200", description = "Vote successfully added", content = {
-                    @Content(schema = @Schema(implementation = RulingResponse.class))
-            }),
+            @ApiResponse(responseCode = "200", description = "Vote successfully added"),
             @ApiResponse(responseCode = "409", description = "The requested ruling is not open for voting", content = {
-                    @Content(schema = @Schema(implementation = StandbardErrorResponse.class))
+                    @Content(schema = @Schema(hidden = true))
             })
     })
     @PostMapping("/vote/{rulingId}")
@@ -88,11 +83,9 @@ public class RulingController {
     }
 
     @Operation(summary = "Returns result of voting session", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained result", content = {
-                    @Content(schema = @Schema(implementation = ResultRulingResponse.class))
-            }),
+            @ApiResponse(responseCode = "200", description = "Successfully obtained result"),
             @ApiResponse(responseCode = "409", description = "The requested ruling doesn't have a voting session", content = {
-                    @Content(schema = @Schema(implementation = StandbardErrorResponse.class))
+                    @Content(schema = @Schema(hidden = true))
             })
     })
     @GetMapping("/result/{rulingId}")
@@ -102,11 +95,9 @@ public class RulingController {
     }
 
     @Operation(summary = "Returns rulings by result status", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings", content = {
-                    @Content(schema = @Schema(implementation = ResultRulingResponse.class))
-            }),
+            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings"),
             @ApiResponse(responseCode = "400", description = "The attribute value is not valid", content = {
-                    @Content(schema = @Schema(implementation = StandbardErrorResponse.class))
+                    @Content(schema = @Schema(hidden = true))
             })
     })
     @GetMapping("/resultStatus/{resultStatus}")
@@ -116,11 +107,9 @@ public class RulingController {
     }
 
     @Operation(summary = "Returns rulings by vote result", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings", content = {
-                    @Content(schema = @Schema(implementation = ResultRulingResponse.class))
-            }),
+            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings"),
             @ApiResponse(responseCode = "400", description = "The attribute value is not valid", content = {
-                    @Content(schema = @Schema(implementation = StandbardErrorResponse.class))
+                    @Content(schema = @Schema(hidden = true))
             })
     })
     @GetMapping("/pollResult/{votedResult}")
@@ -130,9 +119,7 @@ public class RulingController {
     }
 
     @Operation(summary = "Returns rulings by name", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings", content = {
-                    @Content(schema = @Schema(implementation = ResultRulingResponse.class))
-            })
+            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings")
     })
     @GetMapping
     public ResponseEntity<List<RulingResponse>> getRulingsByName(@Valid @RequestParam String name) {

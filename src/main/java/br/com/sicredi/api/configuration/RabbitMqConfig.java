@@ -13,7 +13,7 @@ public class RabbitMqConfig {
 
     public static final String RULING_QUEUE = "ruling";
     public static final String EXCHANGE_NAME = "amq.direct";
-    private final AmqpAdmin amqpAdmin;
+    private AmqpAdmin amqpAdmin;
 
     private RabbitMqConfig(AmqpAdmin amqpAdmin) {
         this.amqpAdmin = amqpAdmin;

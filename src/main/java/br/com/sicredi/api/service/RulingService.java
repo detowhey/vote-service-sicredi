@@ -90,7 +90,9 @@ public class RulingService {
     }
 
     public List<Ruling> findByRulingByStatus(String rulingStatus) {
-        if (rulingStatus.equalsIgnoreCase(RulingStatus.OPEN.name()) || rulingStatus.equalsIgnoreCase(RulingStatus.CLOSED.name()) || rulingStatus.equalsIgnoreCase(RulingStatus.NOT_STARTED.name()))
+        if (rulingStatus.equalsIgnoreCase(RulingStatus.OPEN.name())
+                || rulingStatus.equalsIgnoreCase(RulingStatus.CLOSED.name())
+                || rulingStatus.equalsIgnoreCase(RulingStatus.NOT_STARTED.name()))
             return rulingRepository.findAllByStatus(rulingStatus);
         throw new InvalidRulingAttributeException(rulingStatus);
     }

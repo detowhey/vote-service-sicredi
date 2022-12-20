@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-  vote-service:
+  vote-service-sicredi:
     build:
-      context: compose
+      context: .
       network: host
     restart: always
     container_name: vote-service-sicredi
