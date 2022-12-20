@@ -3,6 +3,8 @@ package br.com.sicredi.api.exception.handler;
 import br.com.sicredi.api.exception.*;
 import br.com.sicredi.api.exception.error.StandardErrorResponse;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +16,8 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(ResourceExceptionHandler.class);
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardErrorResponse> sendResourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
@@ -69,6 +73,7 @@ public class ResourceExceptionHandler {
             HttpStatus httpStatus, Exception exception,
             HttpServletRequest request, String messageError) {
 
+        this.logger.error(exception.getMessage(), exception);
         var error = new StandardErrorResponse(Instant.now(), httpStatus.value(), messageError, exception.getMessage(), request.getRequestURI());
         return ResponseEntity.status(httpStatus).body(error);
     }
