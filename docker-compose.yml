@@ -1,13 +1,13 @@
 version: '3.8'
 services:
-  vote-service-sicredi:
+  vote-api:
     build:
       context: .
       network: host
     restart: always
     container_name: vote-service-sicredi
     ports:
-      - 8082:8082
+      - 8080:8080
     networks:
       service-network:
     depends_on:

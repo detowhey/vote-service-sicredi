@@ -17,9 +17,9 @@ public class ResultRulingResponse {
     private String rulingId;
     @Schema(description = "Rulings name", example = "Name of ruling")
     private String name;
-    @Schema(description = "Number of votes 'YES'")
+    @Schema(description = "Number of votes 'YES'", example = "2")
     private Long numberYesVotes;
-    @Schema(description = "Number of votes 'NO'")
+    @Schema(description = "Number of votes 'NO'", example = "1")
     private Long numberNoVotes;
     @Schema(description = "Result of voting", example = "YES")
     private PollResult result;

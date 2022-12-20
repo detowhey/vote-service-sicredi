@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class SessionRequest {
 
-    @Schema(description = "Session duration in minutes", example = "2")
+    @Schema(description = "Session duration in minutes", example = "1")
     @Min(value = 1, message = "Session time must be at least 1 minute")
     @NotNull(message = "Minutes not be null")
     private Integer minutes;

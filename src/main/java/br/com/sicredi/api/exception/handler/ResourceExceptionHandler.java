@@ -55,12 +55,12 @@ public class ResourceExceptionHandler {
     }
 
     @ExceptionHandler(InvalidCpfException.class)
-    public ResponseEntity<StandardErrorResponse> memberIsRegistered(HttpServletRequest request, InvalidCpfException e) {
+    public ResponseEntity<StandardErrorResponse> sendInvalidCpfException(HttpServletRequest request, InvalidCpfException e) {
         return buildResponseErrorEntity(HttpStatus.BAD_REQUEST, e, request, "Invalid CPF");
     }
 
     @ExceptionHandler(DuplicateVoteException.class)
-    public ResponseEntity<StandardErrorResponse> duplicatedVote(HttpServletRequest request, DuplicateVoteException e) {
+    public ResponseEntity<StandardErrorResponse> sendDuplicatedVote(HttpServletRequest request, DuplicateVoteException e) {
         return buildResponseErrorEntity(HttpStatus.CONFLICT, e, request, "The vote is duplicated");
     }
 
@@ -74,7 +74,7 @@ public class ResourceExceptionHandler {
             HttpServletRequest request, String messageError) {
 
         this.logger.error(exception.getMessage(), exception);
-        var error = new StandardErrorResponse(Instant.now(), httpStatus.value(), messageError, exception.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(httpStatus).body(error);
+        var responseError = new StandardErrorResponse(Instant.now(), httpStatus.value(), messageError, exception.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(httpStatus).body(responseError);
     }
 }

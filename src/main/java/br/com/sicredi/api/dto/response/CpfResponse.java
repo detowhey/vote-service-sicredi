@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class CpfResponse {
     @Schema(description = "Member's CPF", example = "12345678910", maxLength = 11)
     private String cpfNumber;
-    @Schema(description = "True for valid cpf", example = "true")
+    @Schema(description = "True for CPF enabled to vote", example = "true")
     private Boolean isValidToVote;
 
     public CpfResponse(CpfExternalResponse cpfExternalResponse) {

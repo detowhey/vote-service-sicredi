@@ -1,6 +1,7 @@
 package br.com.sicredi.api.domain;
 
 import br.com.sicredi.api.domain.enu.RulingStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +29,6 @@ public class Ruling {
     @Size(min = 5, message = "Name is more then 5 chars")
     private String name;
     @Builder.Default
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private RulingStatus status = RulingStatus.NOT_STARTED;
 }
