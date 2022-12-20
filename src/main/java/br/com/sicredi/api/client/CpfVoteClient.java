@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CpfVoteClient {
 
     @GetMapping(value = "users/{cpf}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    CpfExternalResponse getCpfEnaleToVote(@PathVariable("cpf") String cpf);
+    CpfExternalResponse getCpfEnableToVote(@PathVariable("cpf") String cpf);
 }

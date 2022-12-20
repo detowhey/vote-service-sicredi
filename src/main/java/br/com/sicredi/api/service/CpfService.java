@@ -19,7 +19,7 @@ public class CpfService {
     private CpfVoteClient cpfVoteClient;
 
     public Cpf getCpfIsValid(String cpf) {
-        CpfExternalResponse info = cpfVoteClient.getCpfEnaleToVote(cpf);
+        CpfExternalResponse info = cpfVoteClient.getCpfEnableToVote(cpf);
         String status = info.getStatus();
         boolean isAble = status.equals(EligibleToVote.ABLE_TO_VOTE.name());
         return new Cpf(cpf, isAble, status);
