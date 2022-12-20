@@ -26,9 +26,14 @@ public class OpenApiConfig {
             openApi.getPaths().values().forEach(pathItem -> pathItem.readOperations().forEach(operation -> {
                 ApiResponses apiResponses = operation.getResponses();
 
-                ApiResponse apiResponse = new ApiResponse().description("Internal server error")
+                ApiResponse apiResponseInternalServerError = new ApiResponse().description("Internal server error")
                         .content(new Content().addMediaType(MediaType.APPLICATION_JSON_VALUE, new io.swagger.v3.oas.models.media.MediaType()));
-                apiResponses.addApiResponse("500", apiResponse);
+
+                ApiResponse apiResponseNotFound = new ApiResponse().description("The ruling you are trying to access was not found")
+                        .content(new Content().addMediaType(MediaType.APPLICATION_JSON_VALUE, new io.swagger.v3.oas.models.media.MediaType()));
+
+                apiResponses.addApiResponse("500", apiResponseInternalServerError);
+                apiResponses.addApiResponse("404", apiResponseNotFound);
             }));
     }
 }

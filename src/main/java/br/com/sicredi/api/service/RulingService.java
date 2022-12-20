@@ -8,6 +8,7 @@ import br.com.sicredi.api.domain.enu.RulingStatus;
 import br.com.sicredi.api.domain.enu.VoteOption;
 import br.com.sicredi.api.dto.response.ResultRulingResponse;
 import br.com.sicredi.api.exception.DataBaseException;
+import br.com.sicredi.api.exception.InvalidRulingAttributeException;
 import br.com.sicredi.api.exception.RulingNotFoundException;
 import br.com.sicredi.api.exception.SessionAlreadyStartedException;
 import br.com.sicredi.api.repository.RulingRepository;
@@ -89,7 +90,9 @@ public class RulingService {
     }
 
     public List<Ruling> findByRulingByStatus(String rulingStatus) {
-        return rulingRepository.findAllByStatus(rulingStatus);
+        if (rulingStatus.equalsIgnoreCase(RulingStatus.OPEN.name()) || rulingStatus.equalsIgnoreCase(RulingStatus.CLOSED.name()) || rulingStatus.equalsIgnoreCase(RulingStatus.NOT_STARTED.name()))
+            return rulingRepository.findAllByStatus(rulingStatus);
+        throw new InvalidRulingAttributeException(rulingStatus);
     }
 
     public ResultRulingResponse findByRulingPollResult(String rulingId) {
@@ -108,11 +111,14 @@ public class RulingService {
     }
 
     public List<ResultRulingResponse> findByListRulingsPollResult(String pollResult) {
-        List<Ruling> rulingList = this.returnAllRulings();
-        List<ResultRulingResponse> results = new ArrayList<>();
+        if (pollResult.equalsIgnoreCase(PollResult.YES.name()) || pollResult.equalsIgnoreCase(PollResult.NO.name()) || pollResult.equalsIgnoreCase(PollResult.DRAW.name())) {
+            List<Ruling> rulingList = this.returnAllRulings();
+            List<ResultRulingResponse> results = new ArrayList<>();
 
-        rulingList.forEach(ruling -> results.add(this.findByRulingPollResult(ruling.getId())));
-        return results.stream().filter(result -> result.getResult().name().equals(pollResult)).collect(Collectors.toList());
+            rulingList.forEach(ruling -> results.add(this.findByRulingPollResult(ruling.getId())));
+            return results.stream().filter(result -> result.getResult().name().equals(pollResult)).collect(Collectors.toList());
+        }
+        throw new InvalidRulingAttributeException(pollResult);
     }
 
     private PollResult calculatePollResult(long yesVotes, long noVotes) {
