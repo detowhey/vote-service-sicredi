@@ -4,7 +4,6 @@ import net.datafaker.Faker;
 import org.bson.codecs.ObjectIdGenerator;
 
 import java.util.Locale;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class FakeData {
 
@@ -36,7 +35,7 @@ public class FakeData {
     }
 
     public int generateRandomInt(int minValue, int maxValue) {
-        return ThreadLocalRandom.current().nextInt(minValue, maxValue);
+        return faker.number().numberBetween(minValue, maxValue);
     }
 
     public int generateRandomInt(int maxValue) {

@@ -7,6 +7,7 @@ import br.com.sicredi.api.exception.InvalidCpfException;
 import br.com.sicredi.api.service.CpfService;
 import br.com.sicredi.api.stub.CpfStub;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 public class CpfServiceTest {
 
-    private final FakeData fakeData = new FakeData();
+    private final FakeData fakeData = FakeData.getInstance();
 
     @Spy
     @MockBean
@@ -34,33 +35,34 @@ public class CpfServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @DisplayName("Validate CPF with successfully")
     @Test
     public void mustValidateCpfSuccessfully() {
         String validCpf = fakeData.generateCpf();
 
         doReturn(CpfStub.returnCpf(new Cpf(validCpf, true, "ABLE_TO_VOTE"))).when(cpfVoteClientSpy).getCpfEnableToVote(validCpf);
-
         assertAll(
                 () -> assertTrue(cpfServiceInjectMock.getCpfIsValid(validCpf).getAbleVote()),
                 () -> assertEquals(cpfServiceInjectMock.getCpfIsValid(validCpf).getStatus(), "ABLE_TO_VOTE")
         );
     }
 
+    @DisplayName("Should return unable to vote")
     @Test
     public void shouldReturnUnableToVote() {
         String invalidCpf = fakeData.generateCpf();
 
         doReturn(CpfStub.returnCpf(new Cpf(invalidCpf, false, "UNABLE_TO_VOTE"))).when(cpfVoteClientSpy).getCpfEnableToVote(invalidCpf);
-
         assertAll(
                 () -> assertFalse(cpfServiceInjectMock.getCpfIsValid(invalidCpf).getAbleVote()),
                 () -> assertEquals(cpfServiceInjectMock.getCpfIsValid(invalidCpf).getStatus(), "UNABLE_TO_VOTE")
         );
     }
 
+    @DisplayName("Should return Invalid Cpf Exception")
     @Test
     public void shouldReturnInvalidCpf() {
-        String invalidCpf = fakeData.generateCpf();
+        String invalidCpf = fakeData.generateInvalidCpf();
 
         doThrow(InvalidCpfException.class).when(cpfServiceMock).validateCpf(invalidCpf);
         assertThrows(InvalidCpfException.class, () -> cpfServiceMock.validateCpf(invalidCpf));
