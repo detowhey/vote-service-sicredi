@@ -27,10 +27,7 @@ public class CpfService {
 
     public void validateCpf(String cpf) {
         logger.info("Validating CPF {}", cpf);
-        this.cpfOk(cpf);
-    }
 
-    private void cpfOk(String cpf) {
         if (!getCpfIsValid(cpf).getAbleVote()) {
             throw new InvalidCpfException(cpf);
         }

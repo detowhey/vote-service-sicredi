@@ -12,26 +12,26 @@ public class RulingStub {
     private static final FakeData fakeData = new FakeData();
 
     public static Ruling openRuling() {
-        return getRuling(sessionDefault());
+        return createRuling(sessionDefault());
     }
 
     public static Ruling endingRuling() {
-        return getRuling(endingVoteSession());
+        return createRuling(endingVoteSession());
     }
 
     public static Ruling rulingWithoutSession() {
-        return getRulingWithoutSession();
+        return createRulingWithoutSession();
     }
 
     public static Ruling rulingYesVotes() {
-        return getRuling(returnSessionYesVotes());
+        return createRuling(returnSessionYesVotes());
     }
 
     public static Ruling rulingDrawVotes() {
-        return getRuling(returnSessionDrawVotes());
+        return createRuling(returnSessionDrawVotes());
     }
 
-    private static Ruling getRuling(Session session) {
+    private static Ruling createRuling(Session session) {
         return Ruling.builder()
                 .id(fakeData.generatedId())
                 .name(fakeData.generateFunnyName())
@@ -39,7 +39,7 @@ public class RulingStub {
                 .build();
     }
 
-    private static Ruling getRulingWithoutSession() {
+    private static Ruling createRulingWithoutSession() {
         return Ruling.builder()
                 .id(fakeData.generatedId())
                 .name(fakeData.generateFunnyName())
