@@ -13,6 +13,7 @@ import br.com.sicredi.api.exception.RulingNotFoundException;
 import br.com.sicredi.api.exception.SessionAlreadyStartedException;
 import br.com.sicredi.api.repository.RulingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -47,8 +48,8 @@ public class RulingService {
         return rulingRepository.findAll();
     }
 
-    public List<Ruling> findByNameRegex(String name) {
-        return rulingRepository.findByName(name);
+    public List<Ruling> findByNameRegex(String name, Integer numberPage, Integer size) {
+        return rulingRepository.findByName(name, this.createPageRequest(numberPage, size)).stream().collect(Collectors.toList());
     }
 
     public Ruling findById(String id) {
@@ -89,10 +90,14 @@ public class RulingService {
                 .map(rulingRepository::save).get();
     }
 
+    public List<Ruling> findByRulingByStatus(String rulingStatus, Integer numberPage, Integer size) {
+        if (this.checkStatus(rulingStatus))
+            return rulingRepository.findAllByStatus(rulingStatus, this.createPageRequest(numberPage, size)).stream().collect(Collectors.toList());
+        throw new InvalidRulingAttributeException(rulingStatus);
+    }
+
     public List<Ruling> findByRulingByStatus(String rulingStatus) {
-        if (rulingStatus.equalsIgnoreCase(RulingStatus.OPEN.name())
-                || rulingStatus.equalsIgnoreCase(RulingStatus.CLOSED.name())
-                || rulingStatus.equalsIgnoreCase(RulingStatus.NOT_STARTED.name()))
+        if (this.checkStatus(rulingStatus))
             return rulingRepository.findAllByStatus(rulingStatus);
         throw new InvalidRulingAttributeException(rulingStatus);
     }
@@ -150,5 +155,23 @@ public class RulingService {
         return Optional.ofNullable(ruling.getSession())
                 .map(sessionService::verifyResult)
                 .orElseThrow(() -> new RulingNotFoundException(ruling.getId()));
+    }
+
+    private PageRequest createPageRequest(Integer numberPage, Integer size) {
+        PageRequest page;
+
+        if (numberPage == null && size == null)
+            page = PageRequest.of(0, 20);
+        else if (size == null)
+            page = PageRequest.of(numberPage, 20);
+        else
+            page = PageRequest.of(Objects.requireNonNullElse(numberPage, 0), size);
+        return page;
+    }
+
+    private boolean checkStatus(String rulingStatus) {
+        return rulingStatus.equalsIgnoreCase(RulingStatus.OPEN.name())
+                || rulingStatus.equalsIgnoreCase(RulingStatus.CLOSED.name())
+                || rulingStatus.equalsIgnoreCase(RulingStatus.NOT_STARTED.name());
     }
 }

@@ -7,10 +7,10 @@ import br.com.sicredi.api.dto.response.CpfResponse;
 
 public class CpfStub {
 
-    private static final FakeData fakeData = new FakeData();
+    private static final FakeData FAKE_DATA = FakeData.getInstance();
 
     public static CpfResponse returnCpf(boolean valid) {
-        return new CpfResponse(fakeData.generateCpf(), valid);
+        return new CpfResponse(FAKE_DATA.generateCpf(), valid);
     }
 
     public static CpfExternalResponse returnCpf(Cpf cpf) {

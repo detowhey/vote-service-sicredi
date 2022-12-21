@@ -1,6 +1,8 @@
 package br.com.sicredi.api.repository;
 
 import br.com.sicredi.api.domain.Ruling;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,8 +14,11 @@ import java.util.List;
 public interface RulingRepository extends MongoRepository<Ruling, String> {
 
     @Query("{ 'name': {$regex: ?0, $options: 'i'}}")
-    List<Ruling> findByName(@Param("name") String name);
+    Page<Ruling> findByName(@Param("name") String name, Pageable pageable);
 
     @Query("{ 'status': ?0}")
-    List<Ruling> findAllByStatus(String status);
+    Page<Ruling> findAllByStatus(@Param("status") String status, Pageable pageable);
+
+    @Query("{ 'status': ?0}")
+    List<Ruling> findAllByStatus(@Param("status")String status);
 }

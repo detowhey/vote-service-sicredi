@@ -6,10 +6,9 @@ import br.com.sicredi.api.domain.Session;
 
 import static br.com.sicredi.api.stub.SessionStub.*;
 
-
 public class RulingStub {
 
-    private static final FakeData fakeData = new FakeData();
+    private static final FakeData FAKE_DATA = FakeData.getInstance();
 
     public static Ruling openRuling() {
         return createRuling(sessionDefault());
@@ -33,16 +32,16 @@ public class RulingStub {
 
     private static Ruling createRuling(Session session) {
         return Ruling.builder()
-                .id(fakeData.generatedId())
-                .name(fakeData.generateFunnyName())
+                .id(FAKE_DATA.generatedId())
+                .name(FAKE_DATA.generateFunnyName())
                 .session(session)
                 .build();
     }
 
     private static Ruling createRulingWithoutSession() {
         return Ruling.builder()
-                .id(fakeData.generatedId())
-                .name(fakeData.generateFunnyName())
+                .id(FAKE_DATA.generatedId())
+                .name(FAKE_DATA.generateFunnyName())
                 .build();
     }
 }

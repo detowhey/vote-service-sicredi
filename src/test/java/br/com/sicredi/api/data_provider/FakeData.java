@@ -9,13 +9,26 @@ import java.util.concurrent.ThreadLocalRandom;
 public class FakeData {
 
     private final Faker faker;
+    private static FakeData instance;
 
-    public FakeData(Locale locale) {
+    private FakeData(Locale locale) {
         this.faker = new Faker(locale);
     }
 
-    public FakeData() {
+    private FakeData() {
         this.faker = new Faker(new Locale("pt-br"));
+    }
+
+    public static FakeData getInstance() {
+        if (instance == null)
+            instance = new FakeData();
+        return instance;
+    }
+
+    public static FakeData getInstance(Locale locale) {
+        if (instance == null)
+            instance = new FakeData(locale);
+        return instance;
     }
 
     public String generateFunnyName() {
@@ -35,7 +48,7 @@ public class FakeData {
     }
 
     public String generateCpf() {
-        return faker.cpf().valid(false);
+        return generateCpf(false);
     }
 
     public String generateInvalidCpf(boolean specialChars) {
@@ -43,7 +56,7 @@ public class FakeData {
     }
 
     public String generateInvalidCpf() {
-        return faker.cpf().invalid(false);
+        return generateInvalidCpf(false);
     }
 
     public String generatedId() {

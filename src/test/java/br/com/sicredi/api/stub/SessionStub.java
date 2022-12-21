@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SessionStub {
 
-    private static final FakeData FAKE_DATA = new FakeData();
+    private static final FakeData FAKE_DATA = FakeData.getInstance();
 
     public static Session session(int minutes) {
         return new Session(minutes);
