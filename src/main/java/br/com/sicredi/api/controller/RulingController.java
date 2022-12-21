@@ -101,9 +101,11 @@ public class RulingController {
             })
     })
     @GetMapping("/resultStatus/{resultStatus}")
-    public ResponseEntity<List<ResultRulingResponse>> getRulingsByResultStatus(@PathVariable String resultStatus) {
+    public ResponseEntity<List<ResultRulingResponse>> getRulingsByResultStatus(@PathVariable String resultStatus,
+                                                                               @RequestParam(required = false) Integer numberPage,
+                                                                               @RequestParam(required = false) Integer size) {
         logger.info("Search for rulings by the result '{}' of the session", resultStatus);
-        return ResponseEntity.ok(transformToResultRulingResponse(rulingService.findByRulingByStatus(resultStatus)));
+        return ResponseEntity.ok(transformToResultRulingResponse(rulingService.findByRulingByStatus(resultStatus, numberPage, size)));
     }
 
     @Operation(summary = "Returns rulings by vote result", responses = {
@@ -122,9 +124,11 @@ public class RulingController {
             @ApiResponse(responseCode = "200", description = "Successfully obtained rulings")
     })
     @GetMapping
-    public ResponseEntity<List<RulingResponse>> getRulingsByName(@Valid @RequestParam String name) {
+    public ResponseEntity<List<RulingResponse>> getRulingsByName(@Valid @RequestParam(required = false) String name,
+                                                                 @RequestParam(required = false) Integer numberPage,
+                                                                 @RequestParam(required = false) Integer size) {
         logger.info("Search for rulings by name '{}'", name);
-        return ResponseEntity.ok(transformToRulingResponse(rulingService.findByNameRegex(name)));
+        return ResponseEntity.ok(transformToRulingResponse(rulingService.findByNameRegex(name, numberPage, size)));
     }
 
     private RulingResponse transformToRulingResponse(Ruling ruling) {
