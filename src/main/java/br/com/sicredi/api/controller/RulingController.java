@@ -51,7 +51,7 @@ public class RulingController {
 
         var ruling = modelMapper.map(rulingRequest, Ruling.class);
         ruling.setId(ObjectId.get().toString());
-        ruling = rulingService.save(ruling);
+        ruling = rulingService.insertTo(ruling);
         var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(ruling.getId()).toUri();
         return ResponseEntity.created(uri).body(transformToRulingResponse(ruling));
     }

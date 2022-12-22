@@ -17,14 +17,10 @@ import static java.util.stream.Collectors.groupingBy;
 public class SessionService {
 
     public void vote(Session session, Vote vote) {
-        if (this.isClosed(session))
+        if (this.sessionIsClosed(session))
             throw new SessionClosedException();
 
         this.addVote(vote, session);
-    }
-
-    public boolean isClosed(Session session) {
-        return LocalDateTime.now().isAfter(session.getCreationDate());
     }
 
     public boolean memberIsVoted(String memberId, Session session) {

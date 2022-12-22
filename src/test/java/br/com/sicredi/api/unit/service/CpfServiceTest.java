@@ -35,8 +35,8 @@ public class CpfServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @DisplayName("Validate CPF with successfully")
     @Test
+    @DisplayName("Validate CPF with successfully")
     public void mustValidateCpfSuccessfully() {
         String validCpf = fakeData.generateCpf();
 
@@ -47,8 +47,8 @@ public class CpfServiceTest {
         );
     }
 
-    @DisplayName("Should return unable to vote")
     @Test
+    @DisplayName("Should return unable to vote")
     public void shouldReturnUnableToVote() {
         String invalidCpf = fakeData.generateCpf();
 
@@ -59,8 +59,8 @@ public class CpfServiceTest {
         );
     }
 
-    @DisplayName("Should return Invalid Cpf Exception")
     @Test
+    @DisplayName("Should return Invalid Cpf Exception")
     public void shouldReturnInvalidCpf() {
         String invalidCpf = fakeData.generateInvalidCpf();
 

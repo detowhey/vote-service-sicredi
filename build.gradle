@@ -33,7 +33,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
-    testImplementation 'org.springframework.amqp:spring-rabbit-test:3.0.0'
+    testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.2'
     testImplementation 'net.datafaker:datafaker:1.7.0'
 }
 

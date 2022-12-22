@@ -19,7 +19,10 @@ public class RulingStub {
     }
 
     public static Ruling rulingWithoutSession() {
-        return createRulingWithoutSession();
+        return Ruling.builder()
+                .id(FAKE_DATA.generatedId())
+                .name(FAKE_DATA.generateFunnyName())
+                .build();
     }
 
     public static Ruling rulingYesVotes() {
@@ -35,13 +38,6 @@ public class RulingStub {
                 .id(FAKE_DATA.generatedId())
                 .name(FAKE_DATA.generateFunnyName())
                 .session(session)
-                .build();
-    }
-
-    private static Ruling createRulingWithoutSession() {
-        return Ruling.builder()
-                .id(FAKE_DATA.generatedId())
-                .name(FAKE_DATA.generateFunnyName())
                 .build();
     }
 }

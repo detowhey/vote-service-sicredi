@@ -29,7 +29,7 @@ public class RulingService {
     @Autowired
     private SessionService sessionService;
 
-    public Ruling save(Ruling ruling) {
+    public Ruling insertTo(Ruling ruling) {
         try {
             rulingRepository.insert(ruling);
             return ruling;
