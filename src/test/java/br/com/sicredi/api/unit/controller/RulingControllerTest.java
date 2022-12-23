@@ -37,7 +37,6 @@ public class RulingControllerTest {
 
     @Autowired
     MockMvc mvc;
-
     @MockBean
     RulingService rulingService;
 
@@ -48,7 +47,7 @@ public class RulingControllerTest {
         String id = fakeData.generatedId();
         RulingRequest rulingRequest = new RulingRequest(name);
         Ruling ruling = Ruling.builder().id(id).name(name).build();
-        String content = null;
+        String content;
         try {
             content = new ObjectMapper().writeValueAsString(rulingRequest);
         } catch (JsonProcessingException e) {
