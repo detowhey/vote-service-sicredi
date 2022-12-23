@@ -8,15 +8,17 @@
 - Obter resultado da pauta (conforme os filtros)
 
 
-### Tecnologias utilizadas
+### Tecnologias, frameworks e bibliotecas utilizadas
 - [Java 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html)
 - [Gradle 7.0+](https://docs.gradle.org/7.0/userguide/userguide.html)
 - [Spring Boot (2.7.5)](https://spring.io/projects/spring-boot)
-- [JUnit5](https://junit.org/junit5/docs/current/user-guide/), [Mockito](https://site.mockito.org/)
+- [JUnit5](https://junit.org/junit5/docs/current/user-guide/), [Mockito](https://site.mockito.org/), [Datafaker](https://www.datafaker.net/)
 - [Swagger (openapi v1.6.14)](https://springdoc.org/)
 - [Docker](https://www.docker.com/), [Docker Compose](https://docs.docker.com/compose/)
 - [MongoDB](https://www.mongodb.com/)
 - [RabbitMQ](https://www.rabbitmq.com/)
+- [Lombok](https://projectlombok.org/)
+- [ModelMapper](http://modelmapper.org/)
 
 A maioria das tecnologias foi integrada ao ecossistema do Spring Boot.
 
