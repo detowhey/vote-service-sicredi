@@ -8,6 +8,7 @@ import br.com.sicredi.api.dto.request.SessionRequest;
 import br.com.sicredi.api.dto.response.ResultRulingResponse;
 import br.com.sicredi.api.service.RulingService;
 import br.com.sicredi.api.stub.RulingStub;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,12 +43,17 @@ public class RulingControllerTest {
 
     @Test
     @DisplayName("Must register a new ruling")
-    public void registerRuling() throws Exception {
+    public void registerRuling() {
         String name = fakeData.generateFunnyName();
         String id = fakeData.generatedId();
         RulingRequest rulingRequest = new RulingRequest(name);
         Ruling ruling = Ruling.builder().id(id).name(name).build();
-        String content = new ObjectMapper().writeValueAsString(rulingRequest);
+        String content = null;
+        try {
+            content = new ObjectMapper().writeValueAsString(rulingRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         when(rulingService.insertTo(Mockito.any())).thenReturn(ruling);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -55,17 +61,26 @@ public class RulingControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(content);
-        mvc.perform(request)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").value(id))
-                .andExpect(jsonPath("name").value(rulingRequest.getName()));
+        try {
+            mvc.perform(request)
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("id").value(id))
+                    .andExpect(jsonPath("name").value(rulingRequest.getName()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     @DisplayName("Must open a voting session for the ruling")
-    public void openRulingSession() throws Exception {
+    public void openRulingSession()  {
         SessionRequest sessaoRequest = new SessionRequest(2);
-        String content = new ObjectMapper().writeValueAsString(sessaoRequest);
+        String content;
+        try {
+            content = new ObjectMapper().writeValueAsString(sessaoRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         when(rulingService.openSession(Mockito.any(), Mockito.any())).thenReturn(RulingStub.rulingWithoutSession());
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -73,20 +88,28 @@ public class RulingControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(content);
-        mvc.perform(request)
-                .andExpect(status().isOk());
+        try {
+            mvc.perform(request)
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
     @DisplayName("Must obtain the result of the voting session of an agenda")
-    public void getResultRuling() throws Exception {
+    public void getResultRuling() {
         ResultRulingResponse response = new ResultRulingResponse();
         when(rulingService.findByRulingPollResult(Mockito.anyString())).thenReturn(response);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .get(PATH + "/result/" + fakeData.generatedId())
                 .accept(MediaType.APPLICATION_JSON);
-        mvc.perform(request)
-                .andExpect(status().isOk());
+        try {
+            mvc.perform(request)
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
