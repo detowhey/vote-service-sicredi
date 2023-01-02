@@ -14,13 +14,9 @@ public class FakeData {
         this.faker = new Faker(locale);
     }
 
-    private FakeData() {
-        this.faker = new Faker(new Locale("pt-br"));
-    }
-
     public static FakeData getInstance() {
         if (instance == null)
-            instance = new FakeData();
+            instance = new FakeData(new Locale("pt-br"));
         return instance;
     }
 
