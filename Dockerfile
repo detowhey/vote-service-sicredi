@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM amazoncorretto:21
 MAINTAINER Henrique de Freitas Almeida
 ADD build/libs/*.jar vote-service-sicredi.jar
 EXPOSE 8080

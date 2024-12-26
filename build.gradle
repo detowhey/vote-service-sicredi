@@ -1,12 +1,17 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.5'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.5'
 }
 
 group = 'br.com.sicredi'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_11
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '21'
+compileJava.options.encoding = 'UTF-8'
+
+springBoot {
+    buildInfo()
+}
 
 configurations {
     compileOnly {
@@ -14,29 +19,34 @@ configurations {
     }
 }
 
+ext {
+    set('springCloudVersion', "2023.0.1")
+    set('springDocVersion', '1.8.0')
+    set('encoding', "UTF-8")
+    set('lombokVersion', "1.18.32")
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.5'
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.7.5'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5'
-    implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.5'
-    implementation 'org.springframework.boot:spring-boot-starter-amqp:2.7.5'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
-    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.13'
+    implementation "org.springdoc:springdoc-openapi-ui:${springDocVersion}"
     implementation 'org.modelmapper:modelmapper:3.1.1'
 
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
-    testImplementation 'org.springframework.amqp:spring-rabbit-test:2.4.2'
+    testImplementation 'org.springframework.amqp:spring-rabbit-test'
     testImplementation 'net.datafaker:datafaker:1.7.0'
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }
