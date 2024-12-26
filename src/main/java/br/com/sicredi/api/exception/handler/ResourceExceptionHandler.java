@@ -2,22 +2,19 @@ package br.com.sicredi.api.exception.handler;
 
 import br.com.sicredi.api.exception.*;
 import br.com.sicredi.api.exception.error.StandardErrorResponse;
-import feign.FeignException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import java.time.Instant;
 
-@ControllerAdvice
+@Slf4j
+@RestControllerAdvice
 public class ResourceExceptionHandler {
-
-    private final Logger logger = LoggerFactory.getLogger(ResourceExceptionHandler.class);
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardErrorResponse> sendResourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
@@ -44,11 +41,6 @@ public class ResourceExceptionHandler {
         return buildResponseErrorEntity(HttpStatus.CONFLICT, e, request, "Session is closed");
     }
 
-    @ExceptionHandler(FeignException.NotFound.class)
-    public ResponseEntity<StandardErrorResponse> sendNotFoundStatusFeignClient(HttpServletRequest request, FeignException.NotFound e) {
-        return buildResponseErrorEntity(HttpStatus.NOT_FOUND, e, request, "CPF isn't valid");
-    }
-
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<StandardErrorResponse> sendConstraintException(HttpServletRequest request, ConstraintViolationException e) {
         return buildResponseErrorEntity(HttpStatus.INTERNAL_SERVER_ERROR, e, request, "Some attribute is invalid");
@@ -73,7 +65,7 @@ public class ResourceExceptionHandler {
             HttpStatus httpStatus, Exception exception,
             HttpServletRequest request, String messageError) {
 
-        this.logger.error(exception.getMessage(), exception);
+        log.error(exception.getMessage(), exception);
         var responseError = new StandardErrorResponse(Instant.now(), httpStatus.value(), messageError, exception.getMessage(), request.getRequestURI());
         return ResponseEntity.status(httpStatus).body(responseError);
     }
