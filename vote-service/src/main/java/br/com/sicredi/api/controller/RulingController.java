@@ -11,7 +11,6 @@ import br.com.sicredi.api.dto.request.SessionRequest;
 import br.com.sicredi.api.dto.request.VoteRequest;
 import br.com.sicredi.api.dto.response.ResultRulingResponse;
 import br.com.sicredi.api.dto.response.RulingResponse;
-import br.com.sicredi.api.feign.client.CpfVoteClient;
 import br.com.sicredi.api.feign.model.CpfResponseExternal;
 import br.com.sicredi.api.mapper.RulingMapper;
 import br.com.sicredi.api.mapper.VoteMapper;
@@ -38,13 +37,6 @@ public class RulingController {
     private final RulingMapper rulingMapper;
     private final VoteMapper voteMapper;
     private final PageConverter pageConverter;
-    private final CpfVoteClient client;
-
-    @GetMapping("/{cpf}")
-    public CpfResponseExternal getCpfEnableToVote(@PathVariable("cpf") String cpf) {
-        return client.getCpfEnableToVote(cpf);
-    }
-
 
     @Operation(summary = "Create new Ruling")
     @CreatedOpenApiResponse
