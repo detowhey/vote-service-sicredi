@@ -1,147 +1,125 @@
 package br.com.sicredi.api.controller;
 
 
-import br.com.sicredi.api.domain.Ruling;
-import br.com.sicredi.api.domain.Vote;
+import br.com.sicredi.api.configuration.swagger.succes.CreatedOpenApiResponse;
+import br.com.sicredi.api.configuration.swagger.succes.OkOpenApiResponse;
+import br.com.sicredi.api.configuration.swagger.succes.OkPaginationOpenApiResponse;
+import br.com.sicredi.api.dto.generic.DataResponse;
+import br.com.sicredi.api.dto.generic.DataResponsePage;
 import br.com.sicredi.api.dto.request.RulingRequest;
 import br.com.sicredi.api.dto.request.SessionRequest;
 import br.com.sicredi.api.dto.request.VoteRequest;
 import br.com.sicredi.api.dto.response.ResultRulingResponse;
 import br.com.sicredi.api.dto.response.RulingResponse;
-import br.com.sicredi.api.service.RulingService;
+import br.com.sicredi.api.mapper.RulingMapper;
+import br.com.sicredi.api.mapper.VoteMapper;
+import br.com.sicredi.api.mapper.implementation.PageConverter;
+import br.com.sicredi.api.model.Ruling;
+import br.com.sicredi.api.model.Vote;
+import br.com.sicredi.api.service.implementation.RulingService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.bson.types.ObjectId;
-import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Tag(name = "Ruling", description = "Ruling endpoint operations")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/${api.version}/ruling", produces = MediaType.APPLICATION_JSON_VALUE)
+@Tag(name = "Ruling", description = "Ruling endpoint operations")
 public class RulingController {
 
-    private final Logger logger = LoggerFactory.getLogger(RulingController.class);
+    private final RulingService rulingService;
+    private final RulingMapper rulingMapper;
+    private final VoteMapper voteMapper;
+    private final PageConverter pageConverter;
 
-    @Autowired
-    private RulingService rulingService;
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Operation(summary = "Create new Ruling", responses = {
-            @ApiResponse(responseCode = "201", description = "Ruling created successfully", content = {
-                    @Content(schema = @Schema(implementation = RulingResponse.class))
-            })
-    })
-    @PostMapping
-    public ResponseEntity<RulingResponse> createRuling(@Valid @RequestBody RulingRequest rulingRequest) {
-        logger.info("Attempt to create ruling {}", rulingRequest);
-
-        var ruling = modelMapper.map(rulingRequest, Ruling.class);
-        ruling.setId(ObjectId.get().toString());
+    @Operation(summary = "Create new Ruling")
+    @CreatedOpenApiResponse
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public DataResponse<RulingResponse> createRuling(@Valid @RequestBody RulingRequest rulingRequest) {
+        Ruling ruling = rulingMapper.dtoToEntity(rulingRequest);
         ruling = rulingService.insertTo(ruling);
-        var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(ruling.getId()).toUri();
-        return ResponseEntity.created(uri).body(transformToRulingResponse(ruling));
+        return DataResponse.of(rulingMapper.transformToRulingResponse(ruling));
     }
 
-    @Operation(summary = "Open the ruling session", responses = {
-            @ApiResponse(responseCode = "200", description = "Voting session opened successfully"),
-            @ApiResponse(responseCode = "409", description = "The voting session for the requested agenda has already been opened previously", content = {
-                    @Content(schema = @Schema(hidden = true))
-            })
-    })
+    @Operation(summary = "Open the ruling session")
+    @CreatedOpenApiResponse
     @PostMapping("/open/{rulingId}")
-    public ResponseEntity<RulingResponse> openSession(@PathVariable String rulingId, @Valid @RequestBody SessionRequest sessionRequest) {
-        logger.info("Attempt to open a session for the ruling {}", rulingId);
-        return ResponseEntity.ok(transformToRulingResponse(rulingService.openSession(rulingId, sessionRequest.getMinutes())));
+    @ResponseStatus(HttpStatus.CREATED)
+    public DataResponse<RulingResponse> openSession(
+            @PathVariable String rulingId,
+            @Valid @RequestBody SessionRequest sessionRequest) {
+        return DataResponse.of(rulingMapper
+                .transformToRulingResponse(rulingService
+                        .openSession(rulingId, sessionRequest.minutes())));
     }
 
 
-    @Operation(summary = "Add a new vote", responses = {
-            @ApiResponse(responseCode = "200", description = "Vote successfully added"),
-            @ApiResponse(responseCode = "409", description = "The requested ruling is not open for voting", content = {
-                    @Content(schema = @Schema(hidden = true))
-            })
-    })
+    @Operation(summary = "Add a new vote")
+    @CreatedOpenApiResponse
     @PostMapping("/vote/{rulingId}")
-    public ResponseEntity<RulingResponse> voteRulingSession(@PathVariable String rulingId, @Valid @RequestBody VoteRequest voteRequest) {
-        logger.info("Vote attempt {} for ruling {}", voteRequest, rulingId);
-        var vote = modelMapper.map(voteRequest, Vote.class);
-        return ResponseEntity.ok(transformToRulingResponse(rulingService.addVote(rulingId, vote)));
+    @ResponseStatus(HttpStatus.CREATED)
+    public DataResponse<RulingResponse> voteRulingSession(
+            @PathVariable String rulingId,
+            @Valid @RequestBody VoteRequest voteRequest) {
+        Vote vote = voteMapper.dtoToEntity(voteRequest);
+        return DataResponse.of(rulingMapper.transformToRulingResponse(rulingService.addVote(rulingId, vote)));
     }
 
-    @Operation(summary = "Returns result of voting session", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained result"),
-            @ApiResponse(responseCode = "409", description = "The requested ruling doesn't have a voting session", content = {
-                    @Content(schema = @Schema(hidden = true))
-            })
-    })
-    @GetMapping("/result/{rulingId}")
-    public ResponseEntity<ResultRulingResponse> getRulingResult(@PathVariable String rulingId) {
-        logger.info("Getting result for ruling {}", rulingId);
-        return ResponseEntity.ok(rulingService.findByRulingPollResult(rulingId));
+    @Operation(summary = "Returns result of voting session")
+    @OkOpenApiResponse
+    @GetMapping("/result/{id}")
+    public DataResponse<ResultRulingResponse> getRulingResult(@PathVariable String id) {
+        return DataResponse.of(rulingService.findByRulingPollResult(id));
     }
 
-    @Operation(summary = "Returns rulings by result status", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings"),
-            @ApiResponse(responseCode = "400", description = "The attribute value is not valid", content = {
-                    @Content(schema = @Schema(hidden = true))
-            })
-    })
+    @Operation(summary = "Returns rulings by result status")
+    @OkOpenApiResponse
     @GetMapping("/resultStatus/{resultStatus}")
-    public ResponseEntity<List<ResultRulingResponse>> getRulingsByResultStatus(@PathVariable String resultStatus,
-                                                                               @RequestParam(required = false) Integer numberPage,
-                                                                               @RequestParam(required = false) Integer size) {
-        logger.info("Search for rulings by the result '{}' of the session", resultStatus);
-        return ResponseEntity.ok(transformToResultRulingResponse(rulingService.findByRulingByStatus(resultStatus, numberPage, size)));
+    public DataResponsePage<RulingResponse> getRulingsByResultStatus(
+            @PathVariable String resultStatus,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(value = "sortedBy", defaultValue = "id", required = false) String sortedBy,
+            @RequestParam(value = "orderBy", defaultValue = "DESC", required = false) String orderBy
+    ) {
+        var rulings = rulingService.
+                findByRulingByStatus(resultStatus, page, size, sortedBy, orderBy);
+        return pageConverter.toPageRulingDto(rulings);
     }
 
-    @Operation(summary = "Returns rulings by vote result", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings"),
-            @ApiResponse(responseCode = "400", description = "The attribute value is not valid", content = {
-                    @Content(schema = @Schema(hidden = true))
-            })
-    })
+    @Operation(summary = "Returns rulings by vote result")
+    @OkOpenApiResponse
     @GetMapping("/pollResult/{votedResult}")
-    public ResponseEntity<List<ResultRulingResponse>> getRulingByPollResult(@PathVariable String voteResult) {
-        logger.info("Search for rulings by poll result '{}'", voteResult);
-        return ResponseEntity.ok(rulingService.findByListRulingsPollResult(voteResult));
+    public DataResponsePage<ResultRulingResponse> getRulingByPollResult(
+            @PathVariable String voteResult,
+            @RequestParam(defaultValue = "1", required = false) Integer page,
+            @RequestParam(defaultValue = "10", required = false) Integer size,
+            @RequestParam(value = "sortedBy", defaultValue = "id", required = false) String sortedBy,
+            @RequestParam(value = "orderBy", defaultValue = "DESC", required = false) String orderBy
+    ) {
+        return pageConverter
+                .toPageResultRulingDto(rulingService
+                        .findByListRulingsPollResult(voteResult, page, size, sortedBy, orderBy));
     }
 
-    @Operation(summary = "Returns rulings by name", responses = {
-            @ApiResponse(responseCode = "200", description = "Successfully obtained rulings")
-    })
-    @GetMapping
-    public ResponseEntity<List<RulingResponse>> getRulingsByName(@Valid @RequestParam(required = false) String name,
-                                                                 @RequestParam(required = false) Integer numberPage,
-                                                                 @RequestParam(required = false) Integer size) {
-        logger.info("Search for rulings by name '{}'", name);
-        return ResponseEntity.ok(transformToRulingResponse(rulingService.findByNameRegex(name, numberPage, size)));
-    }
-
-    private RulingResponse transformToRulingResponse(Ruling ruling) {
-        return modelMapper.map(ruling, RulingResponse.class);
-    }
-
-    private List<RulingResponse> transformToRulingResponse(List<Ruling> rulingList) {
-        return rulingList.stream().map(ruling ->
-                modelMapper.map(ruling, RulingResponse.class)).collect(Collectors.toList());
-    }
-
-    private List<ResultRulingResponse> transformToResultRulingResponse(List<Ruling> rulingList) {
-        return rulingList.stream().map(ruling ->
-                modelMapper.map(ruling, ResultRulingResponse.class)).collect(Collectors.toList());
+    @Operation(summary = "Returns rulings by name",
+            parameters = @Parameter(name = "name", description = "Name of ruling"))
+    @OkPaginationOpenApiResponse
+    @GetMapping("/search")
+    public DataResponsePage<RulingResponse> getRulingsByName(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            @RequestParam(value = "sortedBy", defaultValue = "id", required = false) String sortedBy,
+            @RequestParam(value = "orderBy", defaultValue = "DESC", required = false) String orderBy
+    ) {
+        var result = rulingService.findByNameRegex(name, page, size, sortedBy, orderBy);
+        return pageConverter.toPageRulingDto(result);
     }
 }

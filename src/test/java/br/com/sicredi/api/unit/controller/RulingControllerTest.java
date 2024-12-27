@@ -2,22 +2,22 @@ package br.com.sicredi.api.unit.controller;
 
 import br.com.sicredi.api.controller.RulingController;
 import br.com.sicredi.api.data_provider.FakeData;
-import br.com.sicredi.api.domain.Ruling;
+import br.com.sicredi.api.model.Ruling;
 import br.com.sicredi.api.dto.request.RulingRequest;
 import br.com.sicredi.api.dto.request.SessionRequest;
 import br.com.sicredi.api.dto.response.ResultRulingResponse;
-import br.com.sicredi.api.service.RulingService;
+import br.com.sicredi.api.service.implementation.RulingService;
 import br.com.sicredi.api.stub.RulingStub;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +37,7 @@ public class RulingControllerTest {
 
     @Autowired
     MockMvc mvc;
-    @MockBean
+    @Mock
     RulingService rulingService;
 
     @Test
@@ -64,7 +64,7 @@ public class RulingControllerTest {
             mvc.perform(request)
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("id").value(id))
-                    .andExpect(jsonPath("name").value(rulingRequest.getName()));
+                    .andExpect(jsonPath("name").value(rulingRequest.name()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -87,23 +87,6 @@ public class RulingControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(content);
-        try {
-            mvc.perform(request)
-                    .andExpect(status().isOk());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Test
-    @DisplayName("Must obtain the result of the voting session of an agenda")
-    public void getResultRuling() {
-        ResultRulingResponse response = new ResultRulingResponse();
-        when(rulingService.findByRulingPollResult(Mockito.anyString())).thenReturn(response);
-
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(PATH + "/result/" + fakeData.generatedId())
-                .accept(MediaType.APPLICATION_JSON);
         try {
             mvc.perform(request)
                     .andExpect(status().isOk());

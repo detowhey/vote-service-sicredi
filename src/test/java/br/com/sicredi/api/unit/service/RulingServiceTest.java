@@ -1,15 +1,15 @@
 package br.com.sicredi.api.unit.service;
 
 import br.com.sicredi.api.data_provider.FakeData;
-import br.com.sicredi.api.domain.Ruling;
-import br.com.sicredi.api.domain.Vote;
-import br.com.sicredi.api.domain.enu.PollResult;
-import br.com.sicredi.api.domain.enu.VoteOption;
 import br.com.sicredi.api.exception.RulingNotFoundException;
 import br.com.sicredi.api.exception.SessionClosedException;
+import br.com.sicredi.api.model.Ruling;
+import br.com.sicredi.api.model.Vote;
+import br.com.sicredi.api.model.enu.PollResult;
+import br.com.sicredi.api.model.enu.VoteOption;
 import br.com.sicredi.api.repository.RulingRepository;
-import br.com.sicredi.api.service.RulingService;
-import br.com.sicredi.api.service.SessionService;
+import br.com.sicredi.api.service.implementation.RulingService;
+import br.com.sicredi.api.service.implementation.SessionService;
 import br.com.sicredi.api.stub.RulingStub;
 import br.com.sicredi.api.stub.VoteStub;
 import org.assertj.core.api.Assertions;
@@ -96,10 +96,10 @@ public class RulingServiceTest {
     public void getVotingResult() {
         when(rulingRepository.findById(any())).thenReturn(Optional.of(RulingStub.rulingYesVotes()));
         var result = rulingService.findByRulingPollResult(fakeData.generatedId());
-        assertNotNull(result.getName());
-        assertEquals(3, result.getNumberYesVotes());
-        assertEquals(1, result.getNumberNoVotes());
-        assertEquals(PollResult.YES, result.getResult());
+        assertNotNull(result.name());
+        assertEquals(3, result.numberYesVotes());
+        assertEquals(1, result.numberNoVotes());
+        assertEquals(PollResult.YES, result.result());
     }
 
     @Test
@@ -107,9 +107,9 @@ public class RulingServiceTest {
     public void getVoteResultWithDraw() {
         when(rulingRepository.findById(any())).thenReturn(Optional.of(RulingStub.rulingDrawVotes()));
         var result = rulingService.findByRulingPollResult(fakeData.generatedId());
-        assertNotNull(result.getName());
-        assertEquals(2, result.getNumberYesVotes());
-        assertEquals(2, result.getNumberNoVotes());
-        assertEquals(PollResult.DRAW, result.getResult());
+        assertNotNull(result.name());
+        assertEquals(2, result.numberYesVotes());
+        assertEquals(2, result.numberNoVotes());
+        assertEquals(PollResult.DRAW, result.result());
     }
 }

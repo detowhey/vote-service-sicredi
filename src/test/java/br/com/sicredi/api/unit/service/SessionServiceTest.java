@@ -1,10 +1,10 @@
 package br.com.sicredi.api.unit.service;
 
 import br.com.sicredi.api.data_provider.FakeData;
-import br.com.sicredi.api.domain.Session;
-import br.com.sicredi.api.domain.enu.VoteOption;
 import br.com.sicredi.api.exception.SessionClosedException;
-import br.com.sicredi.api.service.SessionService;
+import br.com.sicredi.api.model.Session;
+import br.com.sicredi.api.model.enu.VoteOption;
+import br.com.sicredi.api.service.implementation.SessionService;
 import br.com.sicredi.api.stub.SessionStub;
 import br.com.sicredi.api.stub.VoteStub;
 import org.junit.jupiter.api.BeforeEach;

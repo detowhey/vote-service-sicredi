@@ -1,10 +1,10 @@
 package br.com.sicredi.api.unit.service;
 
-import br.com.sicredi.api.client.CpfVoteClient;
 import br.com.sicredi.api.data_provider.FakeData;
-import br.com.sicredi.api.domain.Cpf;
 import br.com.sicredi.api.exception.InvalidCpfException;
-import br.com.sicredi.api.service.CpfService;
+import br.com.sicredi.api.feign.client.CpfVoteClient;
+import br.com.sicredi.api.model.Cpf;
+import br.com.sicredi.api.service.implementation.CpfService;
 import br.com.sicredi.api.stub.CpfStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +42,7 @@ public class CpfServiceTest {
 
         doReturn(CpfStub.returnCpf(new Cpf(validCpf, true, "ABLE_TO_VOTE"))).when(cpfVoteClientSpy).getCpfEnableToVote(validCpf);
         assertAll(
-                () -> assertTrue(cpfServiceInjectMock.getCpfIsValid(validCpf).getAbleVote()),
+                () -> assertTrue(cpfServiceInjectMock.getCpfIsValid(validCpf).getIsValidToVote()),
                 () -> assertEquals(cpfServiceInjectMock.getCpfIsValid(validCpf).getStatus(), "ABLE_TO_VOTE")
         );
     }
@@ -54,7 +54,7 @@ public class CpfServiceTest {
 
         doReturn(CpfStub.returnCpf(new Cpf(invalidCpf, false, "UNABLE_TO_VOTE"))).when(cpfVoteClientSpy).getCpfEnableToVote(invalidCpf);
         assertAll(
-                () -> assertFalse(cpfServiceInjectMock.getCpfIsValid(invalidCpf).getAbleVote()),
+                () -> assertFalse(cpfServiceInjectMock.getCpfIsValid(invalidCpf).getIsValidToVote()),
                 () -> assertEquals(cpfServiceInjectMock.getCpfIsValid(invalidCpf).getStatus(), "UNABLE_TO_VOTE")
         );
     }

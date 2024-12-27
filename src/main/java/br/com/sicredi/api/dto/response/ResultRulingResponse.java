@@ -1,11 +1,11 @@
 package br.com.sicredi.api.dto.response;
 
-import br.com.sicredi.api.domain.enu.PollResult;
+import br.com.sicredi.api.model.enu.PollResult;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ResultRulingResponse(
         @Schema(description = "Identity of the ruling", example = "507f1f77bcf86cd799439011")
-        String rulingId,
+        String id,
         @Schema(description = "Rulings name", example = "Name of ruling")
         String name,
         @Schema(description = "Number of votes 'YES'", example = "2")

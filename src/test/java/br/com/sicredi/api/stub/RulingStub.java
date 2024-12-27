@@ -1,8 +1,8 @@
 package br.com.sicredi.api.stub;
 
 import br.com.sicredi.api.data_provider.FakeData;
-import br.com.sicredi.api.domain.Ruling;
-import br.com.sicredi.api.domain.Session;
+import br.com.sicredi.api.model.Ruling;
+import br.com.sicredi.api.model.Session;
 
 import static br.com.sicredi.api.stub.SessionStub.*;
 
