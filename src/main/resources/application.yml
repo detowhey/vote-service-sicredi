@@ -1,0 +1,19 @@
+spring:
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+      database: vote-sicredi
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: password123
+
+cpf:
+  api:
+    url: localhost:8081
+
+api:
+  version: v1

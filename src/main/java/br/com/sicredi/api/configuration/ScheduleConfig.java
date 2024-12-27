@@ -1,11 +1,11 @@
 package br.com.sicredi.api.configuration;
 
-import br.com.sicredi.api.domain.Ruling;
-import br.com.sicredi.api.domain.enu.RulingStatus;
+import br.com.sicredi.api.model.Ruling;
+import br.com.sicredi.api.model.enu.RulingStatus;
 import br.com.sicredi.api.dto.response.ResultRulingResponse;
-import br.com.sicredi.api.service.RabbitMqService;
-import br.com.sicredi.api.service.RulingService;
-import br.com.sicredi.api.service.SessionService;
+import br.com.sicredi.api.service.implementation.RabbitMqService;
+import br.com.sicredi.api.service.implementation.RulingService;
+import br.com.sicredi.api.service.implementation.SessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

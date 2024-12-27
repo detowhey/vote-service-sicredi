@@ -1,18 +1,17 @@
-version: '3.8'
 services:
   vote-api:
     build:
       context: .
-      network: host
     restart: always
     container_name: vote-service-sicredi
     ports:
       - 8080:8080
     networks:
-      service-network:
+      - service-network
     depends_on:
       - mongodb
       - rabbitmq
+  
   mongodb:
     container_name: mongodb
     image: mongo
@@ -20,9 +19,10 @@ services:
     volumes:
       - data-db:/data/db
     networks:
-      service-network:
+      - service-network
     ports:
       - 27017:27017
+  
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -36,9 +36,12 @@ services:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=password123
     networks:
-      service-network:
+      - service-network
+
 volumes:
   data-db:
   data-mq:
+
 networks:
   service-network:
+    driver: bridge
