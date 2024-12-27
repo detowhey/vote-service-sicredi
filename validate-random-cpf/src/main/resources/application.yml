@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: generate-cpf
+server:
+  port: 8081

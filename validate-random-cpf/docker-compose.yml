@@ -1,0 +1,14 @@
+services:
+  generate-cpf-service:
+    build:
+      context: .
+    restart: always
+    container_name: generate-cpf-service
+    ports:
+      - 8081:8081
+    networks:
+      - service-network
+
+networks:
+  service-network:
+    external: true
