@@ -19,7 +19,6 @@
 - [MongoDB](https://www.mongodb.com/)
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [Lombok](https://projectlombok.org/)
-- [ModelMapper](http://modelmapper.org/)
 
 A maioria das tecnologias foi integrada ao ecossistema do Spring Boot.
 
