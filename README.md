@@ -9,11 +9,11 @@
 
 
 ### Tecnologias, frameworks e bibliotecas utilizadas
-- [Java 11](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html)
-- [Gradle 7.0+](https://docs.gradle.org/7.0/userguide/userguide.html)
-- [Spring Boot (2.7.5)](https://spring.io/projects/spring-boot)
+- [Java 21](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html)
+- [Gradle 8.5+](https://docs.gradle.org/7.0/userguide/userguide.html)
+- [Spring Boot (3.2.0)](https://spring.io/projects/spring-boot)
 - [JUnit5](https://junit.org/junit5/docs/current/user-guide/), [Mockito](https://site.mockito.org/), [Datafaker](https://www.datafaker.net/)
-- [Swagger (openapi v1.6.14)](https://springdoc.org/)
+- [Swagger (openapi 1.18.32)](https://springdoc.org/)
 - [Docker](https://www.docker.com/), [Docker Compose](https://docs.docker.com/compose/)
 - [MongoDB](https://www.mongodb.com/)
 - [RabbitMQ](https://www.rabbitmq.com/)
@@ -31,11 +31,13 @@ O domínio consiste das classes Ruling, Session, Vote e Cpf. As regras de negóc
 ### Exemplo de reposta do serviço (Api)
 ```
 {
+ data : {
     "rulingId": "507f1f77bcf86cd799439011",
     "name": "Name of ruling",
     "numberYesVotes": 2,
     "numberNoVotes": 1,
     "result": "YES"
+    }  
 }
 ```
 
