@@ -8,6 +8,7 @@
 - Obter resultado da pauta (conforme os filtros)
 
 
+
 ### Tecnologias, frameworks e bibliotecas utilizadas
 - [Java 21](https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html)
 - [Gradle 8.5+](https://docs.gradle.org/7.0/userguide/userguide.html)
@@ -27,6 +28,11 @@ A maioria das tecnologias foi integrada ao ecossistema do Spring Boot.
 A aplicação foi dividida em camadas, sendo elas: domínio (_domain_), serviço (_service_) e controle (_controller_). Utilizando o padrão do serviço REST.
 
 O domínio consiste das classes Ruling, Session, Vote e Cpf. As regras de negócio estão nas classes _Service_ e juntas definem uma _collection_ **não** estrutura no mongodb.
+
+#### Observação
+Como o serviço ue consta na prova não está mais disponível,
+criei outro serviço com a mesma funcionalidade.
+
 
 ### Exemplo de reposta do serviço (Api)
 ```
@@ -64,6 +70,9 @@ gradle test
 ```
 
 #### Execução da aplicação
+
+No diretório raiz, executar os comandos: 
+
 ```
 docker-compose build
 docker-compose up

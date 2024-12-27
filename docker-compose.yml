@@ -1,7 +1,8 @@
 services:
   vote-api:
     build:
-      context: .
+      context: ./vote-service
+      dockerfile: Dockerfile
     restart: always
     container_name: vote-service-sicredi
     ports:
@@ -11,6 +12,7 @@ services:
     depends_on:
       - mongodb
       - rabbitmq
+      - generate-cpf-service
   
   mongodb:
     container_name: mongodb
@@ -35,6 +37,17 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=password123
+    networks:
+      - service-network
+
+  generate-cpf-service:
+    build:
+      context: ./validate-random-cpf
+      dockerfile: Dockerfile
+    restart: always
+    container_name: generate-cpf-service
+    ports:
+      - 8081:8081
     networks:
       - service-network
 

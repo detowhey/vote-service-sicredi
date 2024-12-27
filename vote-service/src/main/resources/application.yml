@@ -13,7 +13,7 @@ spring:
 
 cpf:
   api:
-    url: localhost:8081
+    url: generate-cpf-service:8081
 
 api:
   version: v1
